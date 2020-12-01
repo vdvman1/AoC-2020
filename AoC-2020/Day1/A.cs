@@ -12,7 +12,16 @@ namespace AoC_2020.Day1
         public async Task Run()
         {
             string[] lines = await File.ReadAllLinesAsync(Path.Combine("Day1", "input.txt"));
-            HashSet<int> numbers = new(lines.AsParallel().Select(l => (int.TryParse(l, out int num), num)).Where(l => l.Item1).Select(l => l.num));
+            var numbers = new HashSet<int>(
+                lines.AsParallel()
+                .Select(
+                    l => (
+                        valid: int.TryParse(l, out int num),
+                        num
+                    )
+                ).Where(l => l.valid)
+                .Select(l => l.num)
+            );
             bool found = false;
             while (numbers.Count >= 2)
             {
