@@ -8,6 +8,8 @@ namespace AoC_2020.Utilities
 {
     public class Parser
     {
+        public delegate Errors? ParserFunc<T>(out T value);
+
         // TODO: Include position when reporting errors
 
         private readonly string Str;
@@ -45,6 +47,36 @@ namespace AoC_2020.Utilities
         public void Optional(Errors? errors)
         {
             if (errors?.AnyErrors == true) PastOptionalErrors.Add(errors);
+        }
+
+        public static Errors? Repeat<T>(int count, List<T> values, ParserFunc<T> parser)
+        {
+            // TODO: Include required number of repetitions in error messages
+
+            Errors? prevErrors = null;
+            for (int i = 0; i < count; i++)
+            {
+                if(parser(out T value) is Errors errors)
+                {
+                    if(errors.Optional || !errors.AnyErrors)
+                    {
+                        prevErrors = errors;
+                        values.Add(value);
+                    }
+                    else
+                    {
+                        errors.Merge(prevErrors);
+                        return errors;
+                    }
+                }
+                else
+                {
+                    prevErrors = null;
+                    values.Add(value);
+                }
+            }
+
+            return prevErrors;
         }
 
         public bool PeekChar(out char c)
@@ -155,6 +187,14 @@ namespace AoC_2020.Utilities
             public bool AnyErrors => ExpectedChars.Count != 0 || Other.Count != 0;
 
             public Errors(params string[] expected) : this(expected.ToList(), new(), false) { }
+
+            public void Merge(Errors? errors)
+            {
+                if (errors is null) return;
+
+                ExpectedChars.AddRange(errors.ExpectedChars);
+                Other.AddRange(errors.Other);
+            }
 
             public void ValidateOrThrow(params Errors?[] prevErrors) => ValidateOrThrow(prevErrors.Where(e => e is not null)!);
 
