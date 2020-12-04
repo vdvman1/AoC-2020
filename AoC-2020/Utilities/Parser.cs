@@ -248,7 +248,7 @@ namespace AoC_2020.Utilities
                 var msg = expectedChars.JoinWithLast(", ", ", or ");
                 if(other.Count == 0)
                 {
-                    throw new ParseException(msg);
+                    throw new ParseException($"Expected {msg}");
                 }
 
                 throw new ParseException($"{other.JoinWithLast(", ", ", or ")}, also expected {msg}");
