@@ -22,6 +22,7 @@ namespace AoC_2020.Utilities
         }
 
         public string Remainder => Str[Pos..];
+        public bool Complete => Pos == Str.Length;
 
         public void Required(Errors? errors)
         {
