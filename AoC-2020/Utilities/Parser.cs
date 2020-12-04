@@ -92,6 +92,14 @@ namespace AoC_2020.Utilities
             return false;
         }
 
+        public void Skip()
+        {
+            if(Pos < Str.Length)
+            {
+                Pos++;
+            }
+        }
+
         public Errors? AnyChar(out char c)
         {
             if(PeekChar(out c))
