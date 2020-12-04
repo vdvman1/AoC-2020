@@ -123,6 +123,27 @@ namespace AoC_2020.Utilities
             return new Errors(c.ToString());
         }
 
+        public Errors? HexDigit(out int digit)
+        {
+            if (PeekChar(out char c))
+            {
+                switch(c)
+                {
+                    case >= '0' and <= '9':
+                        Pos++;
+                        digit = c - '0';
+                        return null;
+                    case >= 'a' and <= 'f':
+                        Pos++;
+                        digit = c - 'a' + 10;
+                        return null;
+                }
+            }
+
+            digit = default;
+            return new Errors("hexadecimal digit");
+        }
+
         public Errors? Digit(out int digit)
         {
             if(
