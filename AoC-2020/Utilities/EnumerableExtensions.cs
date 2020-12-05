@@ -35,5 +35,19 @@ namespace AoC_2020.Utilities
 
             return builder.ToString();
         }
+
+        public static IEnumerable<(T, T)> Pairwise<T>(this IEnumerable<T> values)
+        {
+            using var it = values.GetEnumerator();
+            if (!it.MoveNext()) yield break;
+
+            T prev = it.Current;
+            while (it.MoveNext())
+            {
+                T next = it.Current;
+                yield return (prev, next);
+                prev = next;
+            }
+        }
     }
 }
