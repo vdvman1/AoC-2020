@@ -216,6 +216,20 @@ namespace AoC_2020.Utilities
             return new Errors("letter");
         }
 
+        public Errors? OneOf(out int index, params char[] chars) => OneOf(out index, chars.Select((c, i) => (c, i)).ToDictionary(c => c.c, c => c.i));
+
+        public Errors? OneOf(out int id, IReadOnlyDictionary<char, int> chars)
+        {
+            if(PeekChar(out char c) && chars.TryGetValue(c, out id))
+            {
+                Pos++;
+                return null;
+            }
+
+            id = default;
+            return new Errors(chars.Keys.Select(char.ToString).ToArray());
+        }
+
         public record Errors(List<string> ExpectedChars, List<string> Other, bool Optional)
         {
             public bool AnyErrors => ExpectedChars.Count != 0 || Other.Count != 0;
