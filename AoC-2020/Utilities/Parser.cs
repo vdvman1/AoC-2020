@@ -50,19 +50,19 @@ namespace AoC_2020.Utilities
             if (errors?.AnyErrors == true) PastOptionalErrors.Add(errors);
         }
 
-        public static Errors? Repeat<T>(int count, List<T> values, ParserFunc<T> parser)
+        public static Errors? Repeat<T>(int count, ParserFunc<T> parser, Action<T> sink)
         {
             // TODO: Include required number of repetitions in error messages
 
             Errors? prevErrors = null;
             for (int i = 0; i < count; i++)
             {
-                if(parser(out T value) is Errors errors)
+                if (parser(out T value) is Errors errors)
                 {
-                    if(errors.Optional || !errors.AnyErrors)
+                    if (errors.Optional || !errors.AnyErrors)
                     {
                         prevErrors = errors;
-                        values.Add(value);
+                        sink(value);
                     }
                     else
                     {
@@ -73,12 +73,16 @@ namespace AoC_2020.Utilities
                 else
                 {
                     prevErrors = null;
-                    values.Add(value);
+                    sink(value);
                 }
             }
 
             return prevErrors;
         }
+
+        public static Errors? Repeat<T>(int count, List<T> values, ParserFunc<T> parser) => Repeat(count, parser, values.Add);
+
+        public static Errors? Repeat<T>(int count, ParserFunc<T> parser) => Repeat(count, parser, v => { });
 
         public bool PeekChar(out char c)
         {

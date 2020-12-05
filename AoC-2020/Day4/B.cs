@@ -107,9 +107,8 @@ namespace AoC_2020.Day4
             try
             {
                 var parser = new Parser(value);
-                const int count = 4;
-                var digits = new List<int>(capacity: count);
-                parser.Required(Parser.Repeat(count, digits, parser.Digit));
+                int year = 0;
+                parser.Required(Parser.Repeat(4, parser.Digit, (int digit) => year = year * 10 + digit));
 
                 if (!parser.Complete)
                 {
@@ -117,7 +116,6 @@ namespace AoC_2020.Day4
                     return false;
                 }
 
-                int year = digits.Aggregate((year, digit) => year * 10 + digit);
                 if (year < min)
                 {
                     Console.WriteLine($"{name} year too early: {year}");
@@ -214,8 +212,7 @@ namespace AoC_2020.Day4
             {
                 var parser = new Parser(value);
                 parser.Required(parser.Char('#'));
-                const int count = 6;
-                parser.Required(Parser.Repeat(count, new List<int>(capacity: count), parser.HexDigit));
+                parser.Required(Parser.Repeat<int>(6, parser.HexDigit));
                 // No validation on actual hex value needed
 
                 if(!parser.Complete)
@@ -237,8 +234,7 @@ namespace AoC_2020.Day4
             try
             {
                 var parser = new Parser(value);
-                const int count = 9;
-                parser.Required(Parser.Repeat(count, new List<int>(count), parser.Digit));
+                parser.Required(Parser.Repeat<int>(9, parser.Digit));
                 // No validation on actual passport ID needed
 
                 if(!parser.Complete)
