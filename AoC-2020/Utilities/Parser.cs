@@ -229,6 +229,98 @@ namespace AoC_2020.Utilities
             id = default;
             return new Errors(chars.Keys.Select(char.ToString).ToArray());
         }
+        public Errors? AnyUntil(out string chars, string match, bool consumeMatch = true)
+        {
+            if(Pos == Str.Length)
+            {
+                chars = string.Empty;
+                return new Errors(match);
+            }
+
+            int index = Str.IndexOf(match, Pos);
+            if (index < 0)
+            {
+                chars = string.Empty;
+                return new Errors(match);
+            }
+
+            chars = Str[Pos..index];
+            Pos = consumeMatch ? index + match.Length : index;
+            return null;
+        }
+
+        public string AnyUntilOptional(string match, bool consumeMatch = true)
+        {
+            if (Pos == Str.Length)
+            {
+                return string.Empty;
+            }
+
+            int index = Str.IndexOf(match, Pos);
+            if (index < 0)
+            {
+                return Remainder;
+            }
+
+            var chars = Str[Pos..index];
+            Pos = consumeMatch ? index + match.Length : index;
+            return chars;
+        }
+
+        public string AnyUntilOneOfOptional(out int? index, params char[] chars) => AnyUntilOneOfOptional(out index, chars.Select((c, i) => (c, i)).ToDictionary(c => c.c, c => c.i));
+
+        public string AnyUntilOneOfOptional(out int? id, IReadOnlyDictionary<char, int> chars)
+        {
+            if(Pos == Str.Length)
+            {
+                id = null;
+                return string.Empty;
+            }
+
+            var builder = new StringBuilder();
+            while(PeekChar(out char c))
+            {
+                Pos++;
+                if(chars.TryGetValue(c, out int foundId))
+                {
+                    id = foundId;
+                    return builder.ToString();
+                }
+                builder.Append(c);
+            }
+
+            id = null;
+            return builder.ToString();
+        }
+
+        public Errors? AnyUntilOneOf(out string value, out int index, params char[] chars) => AnyUntilOneOf(out value, out index, chars.Select((c, i) => (c, i)).ToDictionary(c => c.c, c => c.i));
+
+        public Errors? AnyUntilOneOf(out string value, out int id, IReadOnlyDictionary<char, int> chars)
+        {
+            if (Pos == Str.Length)
+            {
+                id = default;
+                value = string.Empty;
+                return new Errors(chars.Keys.Select(char.ToString).ToArray());
+            }
+
+            var builder = new StringBuilder();
+            while (PeekChar(out char c))
+            {
+                Pos++;
+                if (chars.TryGetValue(c, out int foundId))
+                {
+                    id = foundId;
+                    value = builder.ToString();
+                    return null;
+                }
+                builder.Append(c);
+            }
+
+            id = default;
+            value = builder.ToString();
+            return new Errors(chars.Keys.Select(char.ToString).ToArray());
+        }
 
         public record Errors(List<string> ExpectedChars, List<string> Other, bool Optional)
         {
