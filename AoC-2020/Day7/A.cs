@@ -12,17 +12,17 @@ namespace AoC_2020.Day7
     {
         public async Task Run()
         {
-            string[] lines = await File.ReadAllLinesAsync(Path.Combine("Day7", "input.txt"));
-            var children = new Dictionary<string, List<(int count, string name)>>();
-            var parents = new Dictionary<string, List<string>>();
-            ParseBagFile(lines, children, parents);
+            (_, Dictionary<string, List<string>> parents) = await ParseBagFile();
 
             int count = CountUniqueParents("shiny gold", parents);
             Console.WriteLine($"Number of bags that can (in)directly hold 'shiny gold' bags: {count}");
         }
 
-        private static void ParseBagFile(string[] lines, Dictionary<string, List<(int count, string name)>> children, Dictionary<string, List<string>> parents)
+        public static async Task<(Dictionary<string, List<(int count, string name)>> children, Dictionary<string, List<string>> parents)> ParseBagFile()
         {
+            string[] lines = await File.ReadAllLinesAsync(Path.Combine("Day7", "input.txt"));
+            var children = new Dictionary<string, List<(int count, string name)>>();
+            var parents = new Dictionary<string, List<string>>();
             foreach (string line in lines)
             {
                 try
@@ -70,6 +70,8 @@ namespace AoC_2020.Day7
                     Console.WriteLine($"Invalid bag spec '{line}': {e.Message}");
                 }
             }
+
+            return (children, parents);
         }
 
         private static int CountUniqueParents(string bag, Dictionary<string, List<string>> parents)
