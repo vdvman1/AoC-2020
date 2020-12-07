@@ -7,7 +7,7 @@ namespace AoC_2020
     {
         static async Task Main(string[] args)
         {
-            await new Day7.A().Run();
+            await new Day7.B().Run();
         }
     }
 }
