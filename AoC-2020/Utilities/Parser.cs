@@ -216,6 +216,74 @@ namespace AoC_2020.Utilities
             return new Errors("letter");
         }
 
+        public Errors? Match(string str)
+        {
+            if (
+                Pos + str.Length > Str.Length
+                || !MemoryExtensions.Equals(Str.AsSpan(Pos, str.Length), str, StringComparison.Ordinal)
+            )
+            {
+                return new Errors(str);
+            }
+
+            Pos += str.Length;
+            return null;
+        }
+
+        public Errors? OneOf<T>(out T? matched, Trie<T> trie)
+        {
+            if(!PeekChar(out char c))
+            {
+                if(trie.HasValue)
+                {
+                    matched = trie.Value;
+                    return null;
+                }
+
+                matched = default;
+                return new Errors(trie.Prefixes.Select(char.ToString).ToArray());
+            }
+
+            var chars = new Dictionary<char, TrieNode<T>>(trie.Children);
+
+            do
+            {
+                if (!chars.TryGetValue(c, out TrieNode<T>? node))
+                {
+                    matched = default;
+                    return new Errors(chars.Keys.Select(char.ToString).ToArray());
+                }
+
+                if(Match(node.Key) is Errors errors && errors.AnyErrors)
+                {
+                    matched = default;
+                    return errors;
+                }
+
+                // Shortest match first
+                if(node.HasValue)
+                {
+                    matched = node.Value;
+                    return null;
+                }
+
+                chars.Clear();
+                foreach (var child in node.Children)
+                {
+                    chars.Add(child.Key, child.Value);
+                }
+
+                if(chars.Count == 0)
+                {
+                    matched = default;
+                    return null; // TODO: warning on matching a case with no value
+                }
+            } while (PeekChar(out c));
+
+            matched = default;
+            return new Errors(chars.Keys.Select(char.ToString).ToArray());
+        }
+
         public Errors? OneOf(out int index, params char[] chars) => OneOf(out index, chars.Select((c, i) => (c, i)).ToDictionary(c => c.c, c => c.i));
 
         public Errors? OneOf(out int id, IReadOnlyDictionary<char, int> chars)
