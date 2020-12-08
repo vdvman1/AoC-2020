@@ -24,36 +24,26 @@ namespace AoC_2020.Day8
 
         public async Task Run()
         {
-            string[] lines = await File.ReadAllLinesAsync(Path.Combine("Day8", "input.txt"));
-            (Instruction inst, int offset)[] instructions = lines.Select(ParseInstruction).ToArray();
-            
-            int accumulator = 0;
-            int index = 0;
-            var visited = new HashSet<int>();
+            (Instruction inst, int offset)[] instructions = await ReadInstructions();
 
-            while (visited.Add(index))
+            (bool halted, int accumulator) = RunUntilHaltOrLoop(instructions);
+            if(halted)
             {
-                switch (instructions[index].inst)
-                {
-                    case Instruction.jmp:
-                        index += instructions[index].offset;
-                        break;
-                    case Instruction.acc:
-                        accumulator += instructions[index].offset;
-                        index++;
-                        break;
-                    case Instruction.Unknown:
-                    case Instruction.nop:
-                    default:
-                        index++;
-                        break;
-                }
+                Console.WriteLine($"No loop detected, accumulator: {accumulator}");
             }
-
-            Console.WriteLine($"Value of accumulator before loop detected: {accumulator}");
+            else
+            {
+                Console.WriteLine($"Value of accumulator before loop detected: {accumulator}");
+            }
         }
 
-        public static (Instruction inst, int offset) ParseInstruction(string line)
+        public static async Task<(Instruction inst, int offset)[]> ReadInstructions()
+        {
+            string[] lines = await File.ReadAllLinesAsync(Path.Combine("Day8", "input.txt"));
+            return lines.Select(ParseInstruction).ToArray();
+        }
+
+        private static (Instruction inst, int offset) ParseInstruction(string line)
         {
             try
             {
@@ -76,6 +66,39 @@ namespace AoC_2020.Day8
                 Console.WriteLine($"Invalid instruction '{line}': {e.Message}");
                 return (Instruction.Unknown, 0);
             }
+        }
+
+        public static (bool halted, int accumulator) RunUntilHaltOrLoop(IList<(Instruction inst, int offset)> instructions)
+        {
+            int accumulator = 0;
+            int index = 0;
+            var visited = new HashSet<int>();
+
+            while (visited.Add(index))
+            {
+                if (index >= instructions.Count)
+                {
+                    return (halted: true, accumulator);
+                }
+
+                switch (instructions[index].inst)
+                {
+                    case Instruction.jmp:
+                        index += instructions[index].offset;
+                        break;
+                    case Instruction.acc:
+                        accumulator += instructions[index].offset;
+                        index++;
+                        break;
+                    case Instruction.Unknown:
+                    case Instruction.nop:
+                    default:
+                        index++;
+                        break;
+                }
+            }
+
+            return (halted: false, accumulator);
         }
     }
 }
