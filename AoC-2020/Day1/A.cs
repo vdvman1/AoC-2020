@@ -32,6 +32,6 @@ namespace AoC_2020.Day1
             }
         }
 
-        public static async Task<HashSet<int>> Load() => new HashSet<int>(await Loading.LoadNumbers(nameof(Day1)));
+        public static async Task<HashSet<int>> Load() => new HashSet<int>(await Loading.LoadNumbers(nameof(Day1), signed: true));
     }
 }
