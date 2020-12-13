@@ -24,7 +24,7 @@ namespace AoC_2020.Day9
             }
         }
 
-        public static Task<IEnumerable<int>> Load() => Loading.LoadNumbers(nameof(Day9));
+        public static Task<IEnumerable<int>> Load() => Loading.LoadNumbers(nameof(Day9), signed: false);
 
         public static int? FindBrokenNumber(IEnumerable<int> data)
         {
