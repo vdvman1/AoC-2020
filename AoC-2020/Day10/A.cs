@@ -14,7 +14,7 @@ namespace AoC_2020.Day10
             int ones = 0;
             int threes = 0;
             int prev = 0;
-            foreach (int num in (await Load()).OrderBy(n => n))
+            foreach (int num in await Load())
             {
                 switch(num - prev)
                 {
@@ -39,6 +39,6 @@ namespace AoC_2020.Day10
             Console.WriteLine($"no. 1 jolt differences * no. 3 jolt differences = {(long)ones * threes}");
         }
 
-        public static Task<IEnumerable<int>> Load() => Loading.LoadNumbers(nameof(Day10), signed: false);
+        public static async Task<IEnumerable<int>> Load() => (await Loading.LoadNumbers(nameof(Day10), signed: false)).OrderBy(n => n);
     }
 }
