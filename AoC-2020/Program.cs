@@ -5,6 +5,6 @@ namespace AoC_2020
 {
     class Program
     {
-        static Task Main(string[] args) => Day10.A.Run();
+        static Task Main(string[] args) => Day10.B.Run();
     }
 }
