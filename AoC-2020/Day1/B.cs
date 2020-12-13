@@ -9,19 +9,9 @@ namespace AoC_2020.Day1
 {
     public class B
     {
-        public async Task Run()
+        public static async Task Run()
         {
-            string[] lines = await File.ReadAllLinesAsync(Path.Combine("Day1", "input.txt"));
-            var numbers = new HashSet<int>(
-                lines.AsParallel()
-                .Select(
-                    l => (
-                        valid: int.TryParse(l, out int num),
-                        num
-                    )
-                ).Where(l => l.valid)
-                .Select(l => l.num)
-            );
+            var numbers = await A.Load();
             var triplets = new HashSet<(int a, int b, int c)>();
             bool found = false;
             while (numbers.Count >= 3)

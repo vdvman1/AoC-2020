@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AoC_2020.Utilities;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,9 +10,9 @@ namespace AoC_2020.Day6
 {
     public class A
     {
-        public async Task Run()
+        public static async Task Run()
         {
-            string[] lines = await File.ReadAllLinesAsync(Path.Combine("Day6", "input.txt"));
+            string[] lines = await Loading.Load(nameof(Day6));
             int count = 0;
             for (int l = 0; l < lines.Length; l++)
             {

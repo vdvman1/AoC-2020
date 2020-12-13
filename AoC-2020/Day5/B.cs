@@ -10,9 +10,9 @@ namespace AoC_2020.Day5
 {
     public class B
     {
-        public async Task Run()
+        public static async Task Run()
         {
-            string[] lines = await File.ReadAllLinesAsync(Path.Combine("Day5", "input.txt"));
+            string[] lines = await Loading.Load(nameof(Day5));
             IEnumerable<(int, int)> ids = lines.Select(A.ToId).Where(id => id.HasValue).Select(id => id!.Value).OrderBy(id => id).Pairwise();
             foreach ((int a, int b) in ids)
             {

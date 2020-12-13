@@ -11,7 +11,7 @@ namespace AoC_2020.Day8
 {
     public class B
     {
-        public async Task Run()
+        public static async Task Run()
         {
             (Instruction inst, int offset)[] instructions = await ReadInstructions();
 

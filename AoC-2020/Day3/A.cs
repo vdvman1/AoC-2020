@@ -10,15 +10,15 @@ namespace AoC_2020.Day3
 {
     public class A
     {
-        protected async Task<(bool[][] treeGrid, int width)> Load()
+        public static async Task<(bool[][] treeGrid, int width)> Load()
         {
-            string[] lines = await File.ReadAllLinesAsync(Path.Combine("Day3", "input.txt"));
+            string[] lines = await Loading.Load(nameof(Day3));
             bool[][] treeGrid = lines.Select(line => line.Select(c => c == '#').ToArray()).ToArray();
             int width = treeGrid.Select(line => line.Length).Distinct().Single();
             return (treeGrid, width);
         }
 
-        protected int CountTrees(bool[][] treeGrid, int width, int xStep, int yStep)
+        public static int CountTrees(bool[][] treeGrid, int width, int xStep, int yStep)
         {
             int treeCount = 0;
             int x = 0;
@@ -39,7 +39,7 @@ namespace AoC_2020.Day3
             return treeCount;
         }
 
-        public virtual async Task Run()
+        public static async Task Run()
         {
             (bool[][] treeGrid, int width) = await Load();
 

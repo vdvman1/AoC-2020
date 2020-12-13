@@ -10,14 +10,14 @@ namespace AoC_2020.Day2
 {
     public class A
     {
-        public async Task Run()
+        public static async Task Run()
         {
-            string[] lines = await File.ReadAllLinesAsync(Path.Combine("Day2", "input.txt"));
+            string[] lines = await Loading.Load(nameof(Day2));
             int count = lines.Count(ValidatePassword);
             Console.WriteLine($"Invalid passwords: {count}, Total passwords: {lines.Length}");
         }
 
-        private bool ValidatePassword(string line)
+        private static bool ValidatePassword(string line)
         {
             try
             {

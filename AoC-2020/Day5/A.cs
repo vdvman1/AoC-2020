@@ -10,9 +10,9 @@ namespace AoC_2020.Day5
 {
     public class A
     {
-        public async Task Run()
+        public static async Task Run()
         {
-            string[] lines = await File.ReadAllLinesAsync(Path.Combine("Day5", "input.txt"));
+            string[] lines = await Loading.Load(nameof(Day5));
             int maxID = lines.Select(ToId).Where(id => id.HasValue).Select(id => id!.Value).Max();
             Console.WriteLine($"Max boarding pass ID: {maxID}");
         }

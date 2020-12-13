@@ -8,7 +8,7 @@ namespace AoC_2020.Day7
 {
     public class B
     {
-        public async Task Run()
+        public static async Task Run()
         {
             (Dictionary<string, List<(int count, string name)>> children, _) = await A.ParseBagFile();
 

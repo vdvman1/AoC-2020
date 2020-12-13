@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AoC_2020.Utilities;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,19 +10,9 @@ namespace AoC_2020.Day1
 {
     public class A
     {
-        public async Task Run()
+        public static async Task Run()
         {
-            string[] lines = await File.ReadAllLinesAsync(Path.Combine("Day1", "input.txt"));
-            var numbers = new HashSet<int>(
-                lines.AsParallel()
-                .Select(
-                    l => (
-                        valid: int.TryParse(l, out int num),
-                        num
-                    )
-                ).Where(l => l.valid)
-                .Select(l => l.num)
-            );
+            var numbers = await Load();
             bool found = false;
             while (numbers.Count >= 2)
             {
@@ -40,5 +31,7 @@ namespace AoC_2020.Day1
                 Console.WriteLine("No pairs that sum to 2020 were found");
             }
         }
+
+        public static async Task<HashSet<int>> Load() => new HashSet<int>(await Loading.LoadNumbers(nameof(Day1)));
     }
 }

@@ -10,7 +10,7 @@ namespace AoC_2020.Day7
 {
     public class A
     {
-        public async Task Run()
+        public static async Task Run()
         {
             (_, Dictionary<string, List<string>> parents) = await ParseBagFile();
 
@@ -20,7 +20,7 @@ namespace AoC_2020.Day7
 
         public static async Task<(Dictionary<string, List<(int count, string name)>> children, Dictionary<string, List<string>> parents)> ParseBagFile()
         {
-            string[] lines = await File.ReadAllLinesAsync(Path.Combine("Day7", "input.txt"));
+            string[] lines = await Loading.Load(nameof(Day7));
             var children = new Dictionary<string, List<(int count, string name)>>();
             var parents = new Dictionary<string, List<string>>();
             foreach (string line in lines)

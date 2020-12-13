@@ -22,7 +22,7 @@ namespace AoC_2020.Day8
             { nameof(Instruction.nop), Instruction.nop }
         };
 
-        public async Task Run()
+        public static async Task Run()
         {
             (Instruction inst, int offset)[] instructions = await ReadInstructions();
 
@@ -39,7 +39,7 @@ namespace AoC_2020.Day8
 
         public static async Task<(Instruction inst, int offset)[]> ReadInstructions()
         {
-            string[] lines = await File.ReadAllLinesAsync(Path.Combine("Day8", "input.txt"));
+            string[] lines = await Loading.Load(nameof(Day8));
             return lines.Select(ParseInstruction).ToArray();
         }
 

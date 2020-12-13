@@ -49,5 +49,11 @@ namespace AoC_2020.Utilities
                 prev = next;
             }
         }
+
+        public static IEnumerable<T> WhereNotNull<T>(this IEnumerable<T?> values)
+            where T : struct
+            => values.Where(v => v.HasValue).Select(v => v!.Value);
+
+        public static IEnumerable<T> WhereNotNull<T>(this IEnumerable<T?> values) => (IEnumerable<T>)values.Where(v => v is not null);
     }
 }

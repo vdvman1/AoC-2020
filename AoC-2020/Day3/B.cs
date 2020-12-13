@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace AoC_2020.Day3
 {
-    public class B : A
+    public class B
     {
-        public override async Task Run()
+        public static async Task Run()
         {
-            (bool[][] treeGrid, int width) = await Load();
+            (bool[][] treeGrid, int width) = await A.Load();
             long product = 1;
             foreach ((int xStep, int yStep) in new[] {
                 (1, 1), (3, 1), (5, 1), (7, 1), (1, 2)
             })
             {
-                int count = CountTrees(treeGrid, width, xStep, yStep);
+                int count = A.CountTrees(treeGrid, width, xStep, yStep);
                 product *= count;
                 Console.WriteLine($"Trees intercepted on slope ({xStep}, {yStep}): {count}, partial product: {product}");
             }

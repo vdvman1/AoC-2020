@@ -21,9 +21,9 @@ namespace AoC_2020.Day4
 
         private static readonly IReadOnlySet<string> RequiredKeys = new HashSet<string> { BirthYear, IssueYear, ExpYear, Height, HairColour, EyeColour, PassID };
 
-        public async Task Run()
+        public static async Task Run()
         {
-            string[] lines = await File.ReadAllLinesAsync(Path.Combine("Day4", "input.txt"));
+            string[] lines = await Loading.Load(nameof(Day4));
             int validCount = 0;
 
             for (int l = 0; l < lines.Length; l++)
