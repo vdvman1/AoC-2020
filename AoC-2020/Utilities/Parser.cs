@@ -45,9 +45,15 @@ namespace AoC_2020.Utilities
             }
         }
 
-        public void Optional(Errors? errors)
+        public bool Optional(Errors? errors)
         {
-            if (errors?.AnyErrors == true) PastOptionalErrors.Add(errors);
+            if (errors?.AnyErrors == true)
+            {
+                PastOptionalErrors.Add(errors);
+                return false;
+            }
+
+            return true;
         }
 
         public static Errors? Repeat<T>(int count, ParserFunc<T> parser, Action<T> sink)
