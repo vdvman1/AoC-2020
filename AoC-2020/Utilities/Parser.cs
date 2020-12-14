@@ -286,7 +286,7 @@ namespace AoC_2020.Utilities
 
         public Errors? OneOf(out int index, params char[] chars) => OneOf(out index, chars.Select((c, i) => (c, i)).ToDictionary(c => c.c, c => c.i));
 
-        public Errors? OneOf(out int id, IReadOnlyDictionary<char, int> chars)
+        public Errors? OneOf<T>(out T? id, IReadOnlyDictionary<char, T> chars)
         {
             if(PeekChar(out char c) && chars.TryGetValue(c, out id))
             {
