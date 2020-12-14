@@ -24,6 +24,15 @@ namespace AoC_2020.Utilities
         public string Remainder => Str[Pos..];
         public bool Complete => Pos == Str.Length;
 
+        public void Required()
+        {
+            if (PastOptionalErrors.Count == 0) return;
+
+            var errors = PastOptionalErrors[^1];
+            PastOptionalErrors.RemoveAt(PastOptionalErrors.Count - 1);
+            Required(errors);
+        }
+
         public void Required(Errors? errors)
         {
             if(errors is null)
