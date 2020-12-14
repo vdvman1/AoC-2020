@@ -9,7 +9,7 @@ namespace AoC_2020
         static async Task Main(string[] args)
         {
             var timer = Stopwatch.StartNew();
-            await Day11.B.Run();
+            await Day12.A.Run();
             timer.Stop();
             Console.WriteLine($"Duration: {timer.ElapsedMilliseconds}ms");
         }
